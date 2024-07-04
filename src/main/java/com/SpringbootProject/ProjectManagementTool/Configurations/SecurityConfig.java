@@ -21,14 +21,17 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(management->management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(Authorize->Authorize.requestMatchers("/api/**","/auth/**").authenticated().anyRequest().permitAll())
+                .authorizeHttpRequests(Authorize->Authorize.requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/**").authenticated().anyRequest().permitAll())
                 .addFilterBefore(new jwtTokenAuthenticator(), BasicAuthenticationFilter.class)
                 .csrf(csrf->csrf.disable())
                 .cors(cors->cors.configurationSource(corsConfiguration()));
         return  http.build();
     }
+
 
     private CorsConfigurationSource corsConfiguration() {
         return new CorsConfigurationSource() {
@@ -56,8 +59,5 @@ public class SecurityConfig {
     {
         return new BCryptPasswordEncoder();
     }
-
-
-
 
 }
