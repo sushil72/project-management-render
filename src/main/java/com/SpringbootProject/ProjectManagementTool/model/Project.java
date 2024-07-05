@@ -1,10 +1,7 @@
 package com.SpringbootProject.ProjectManagementTool.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,4 +24,18 @@ public class Project {
     @JsonIgnore
     @OneToMany(mappedBy =  "project" , cascade = CascadeType.ALL,orphanRemoval = true)
     private Chat chat;
+
+    @ManyToOne
+    private User owner;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Issue>issues=new ArrayList<>();
+
+    @OneToMany
+    private List<User>team=new ArrayList<>();
+
+
+
+
+
 }
