@@ -1,6 +1,7 @@
 package com.SpringbootProject.ProjectManagementTool.DTO;
 
 import com.SpringbootProject.ProjectManagementTool.model.Project;
+import com.SpringbootProject.ProjectManagementTool.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,9 @@ public class IssueDTO {
 
     private String title;
     private String description;
-    private String assignee;
+    private User assignee;
     private String status;
-    private String projectId;
+    private Long projectId;
     private String priority;
     private LocalDate dueDate;
     private List<String> tags = new ArrayList<>();

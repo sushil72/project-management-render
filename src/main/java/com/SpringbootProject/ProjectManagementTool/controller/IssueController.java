@@ -6,7 +6,10 @@ import com.SpringbootProject.ProjectManagementTool.Services.UserService;
 import com.SpringbootProject.ProjectManagementTool.model.Issue;
 import com.SpringbootProject.ProjectManagementTool.model.User;
 import com.SpringbootProject.ProjectManagementTool.request.IssueRequest;
+import com.SpringbootProject.ProjectManagementTool.response.AuthResponse;
+import com.SpringbootProject.ProjectManagementTool.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +36,14 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueRequest issueReq , @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueRequest issueReq ,
+                                                @RequestHeader("Authorization") String jwt) throws Exception {
         User tokerUser = userService.findUserProfileByJwt(jwt);
         User user = userService.findUserByid(tokerUser.getId());
-
+        IssueDTO issueDTO = null;
         if(user == null) {
             Issue createdIssue = issueService.createIssue( issueReq,tokerUser);
-            IssueDTO issueDTO = new IssueDTO();
+            issueDTO = new IssueDTO();
             issueDTO.setDescription(createdIssue.getDescription());
             issueDTO.setTitle(createdIssue.getTitle());
             issueDTO.setStatus(createdIssue.getStatus());
@@ -48,7 +52,30 @@ public class IssueController {
             issueDTO.setProjectId(createdIssue.getProjectID());
 
         }
+        return ResponseEntity.ok(issueDTO);
+    }
+    @DeleteMapping("/{issueId}")
+    public ResponseEntity<MessageResponse> deleteIssue(@PathVariable Long issueId , @RequestHeader("Authorization") String jwt) throws Exception
+    {
+        User user = userService.findUserProfileByJwt(jwt);
+        String deleted = issueService.deleteIssue(issueId, user.getId());
+        MessageResponse msg = new MessageResponse();
+        msg.setMessage("Issue Deleted ");
+        return ResponseEntity.ok(msg);
+    }
 
+    @PutMapping("/{issueId}/assignee/{userId}")
+    public ResponseEntity<Issue> addUSertoIssue(@PathVariable Long issueId,
+                                                @PathVariable Long userId ,
+                                                @RequestHeader("Authorization") String jwt) throws Exception {
+        Issue issue = issueService.addUSerToIssue(issueId,userId);
+        return ResponseEntity.ok(issue);
+    }
+
+    @PutMapping("{issueId}/status/{status}")
+    public ResponseEntity<Issue> updateIssueStatus(@PathVariable Long issueId , @PathVariable String  status , @RequestHeader("Authorization") String jwt) throws Exception {
+        Issue issue = issueService.updateStatus(issueId,status);
+        return ResponseEntity.ok(issue);
     }
 
 }
