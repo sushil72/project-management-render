@@ -51,13 +51,11 @@ public class ProjectController {
         return new ResponseEntity<>(project,HttpStatus.OK);
     }
 
-    @PostMapping("/{projectId}")
-    public ResponseEntity<Project> createProject(@PathVariable Long projectId ,
-                              @RequestHeader("Authorization") String jwt ,
-                              @RequestBody Project project
-    ) throws Exception {
+    @PostMapping("/create")
+    public ResponseEntity<Project> createProject(@RequestBody Project project,@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfileByJwt(jwt);
         Project createdproject = projectService.createProject(project , user);
+
         return new ResponseEntity<>(createdproject,HttpStatus.CREATED);
     }
 
@@ -79,7 +77,7 @@ public class ProjectController {
         return new ResponseEntity<>(meassage,HttpStatus.OK);
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public ResponseEntity<List<Project>> searchProject(@RequestParam(required = false)String keyword ,
                                                        @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfileByJwt(jwt);
@@ -87,11 +85,11 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @GetMapping("/{projectid}/chat")
-    public ResponseEntity<Chat> getChatByprojectId(@PathVariable Long projectid ,
+    @GetMapping("/{projectId}/chat")
+    public ResponseEntity<Chat> getChatByProjectId(@PathVariable Long projectId ,
                                                    @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfileByJwt(jwt);
-        Chat chat = projectService.getChatByProjectId(projectid);
+        Chat chat = projectService.getChatByProjectId(projectId);
         return new ResponseEntity<>(chat,HttpStatus.OK);
     }
 

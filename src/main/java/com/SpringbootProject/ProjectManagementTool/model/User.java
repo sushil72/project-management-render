@@ -1,6 +1,7 @@
 package com.SpringbootProject.ProjectManagementTool.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class User {
 
     private String fullname;
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @JsonIgnore
@@ -23,4 +25,5 @@ public class User {
     private List<Issue> assignedIssues = new ArrayList<>();
 
     private int projectSize;
+
 }

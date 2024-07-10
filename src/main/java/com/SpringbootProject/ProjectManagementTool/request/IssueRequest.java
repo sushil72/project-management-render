@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,5 +16,5 @@ public class IssueRequest {
     private String status;
     private String priority;
     private Long projectID;
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 }

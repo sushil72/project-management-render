@@ -1,18 +1,14 @@
 package com.SpringbootProject.ProjectManagementTool.controller;
-
 import com.SpringbootProject.ProjectManagementTool.DTO.IssueDTO;
 import com.SpringbootProject.ProjectManagementTool.Services.IssueService;
 import com.SpringbootProject.ProjectManagementTool.Services.UserService;
 import com.SpringbootProject.ProjectManagementTool.model.Issue;
 import com.SpringbootProject.ProjectManagementTool.model.User;
 import com.SpringbootProject.ProjectManagementTool.request.IssueRequest;
-import com.SpringbootProject.ProjectManagementTool.response.AuthResponse;
 import com.SpringbootProject.ProjectManagementTool.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +37,7 @@ public class IssueController {
         User tokerUser = userService.findUserProfileByJwt(jwt);
         User user = userService.findUserByid(tokerUser.getId());
         IssueDTO issueDTO = null;
-        if(user == null) {
+        if(user != null) {
             Issue createdIssue = issueService.createIssue( issueReq,tokerUser);
             issueDTO = new IssueDTO();
             issueDTO.setDescription(createdIssue.getDescription());
@@ -54,6 +50,7 @@ public class IssueController {
         }
         return ResponseEntity.ok(issueDTO);
     }
+
     @DeleteMapping("/{issueId}")
     public ResponseEntity<MessageResponse> deleteIssue(@PathVariable Long issueId , @RequestHeader("Authorization") String jwt) throws Exception
     {
@@ -65,7 +62,7 @@ public class IssueController {
     }
 
     @PutMapping("/{issueId}/assignee/{userId}")
-    public ResponseEntity<Issue> addUSertoIssue(@PathVariable Long issueId,
+    public ResponseEntity<Issue> addUserToIssue(@PathVariable Long issueId,
                                                 @PathVariable Long userId ,
                                                 @RequestHeader("Authorization") String jwt) throws Exception {
         Issue issue = issueService.addUSerToIssue(issueId,userId);

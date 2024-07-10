@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Project {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
@@ -22,7 +23,7 @@ public class Project {
     private List<String> tags=new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy =  "project" , cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToOne(mappedBy =  "project" , cascade = CascadeType.ALL,orphanRemoval = true)
     private Chat chat;
 
     @ManyToOne
@@ -31,11 +32,7 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Issue>issues=new ArrayList<>();
 
-    @OneToMany
+    @ManyToMany()
     private List<User>team=new ArrayList<>();
-
-
-
-
 
 }

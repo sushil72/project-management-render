@@ -1,21 +1,18 @@
 package com.SpringbootProject.ProjectManagementTool.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.yaml.snakeyaml.events.Event;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Massage {
+public class Message {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String content;
@@ -24,4 +21,7 @@ public class Massage {
 
     @ManyToOne
     private User sender;
+
+    @ManyToOne
+    private Chat chat;
 }
