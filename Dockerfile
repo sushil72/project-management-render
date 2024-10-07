@@ -9,13 +9,7 @@
 #EXPOSE  8080
 #ENTRYPOINT ["java","-jar","render.jar"]
 
-
-# Use Maven with OpenJDK 21
 FROM maven:3.9.6-eclipse-temurin-22-jammy AS build
-
-# Set the working directory inside the container
-WORKDIR /app
-
 # Copy the project files
 COPY . .
 
@@ -26,11 +20,9 @@ RUN mvn clean package -DskipTests
 FROM  eclipse-temurin:22-jdk-jammy
 
 
-# Set the working directory
-WORKDIR /app
 
 # Copy the built JAR file from the build stage
-COPY --from=build /app/target/ProjectManagementTool-0.0.1-SNAPSHOT.jar render.jar
+COPY --from=build target/ProjectManagementTool-0.0.1-SNAPSHOT.jar render.jar
 
 # Expose the port Spring Boot runs on
 EXPOSE 8080
