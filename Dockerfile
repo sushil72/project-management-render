@@ -1,5 +1,5 @@
 
-FROM maven:3.3.1-openjdk:22-jdk AS build
+FROM maven:3.9.5-openjdk:22-jdk AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
