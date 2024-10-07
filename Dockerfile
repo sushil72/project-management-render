@@ -1,10 +1,6 @@
-#FROM ubuntu:latest
-#LABEL authors="suhil"
-#
-#ENTRYPOINT ["top", "-b"]
-FROM maven:3.9.5-openjdk-22 AS build
+
+FROM maven:3.3.1-openjdk:22-jdk AS build
 COPY . .
-#build the project
 RUN mvn clean package -DskipTests
 
 FROM openjdk:22-jdk-slim
