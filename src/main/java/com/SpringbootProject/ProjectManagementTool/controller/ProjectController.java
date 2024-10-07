@@ -37,9 +37,9 @@ public class ProjectController {
             @RequestHeader("Authorization") String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
+        System.out.println("category and the tag : " + Category+ "  "+ tag);
         List<Project>projects = projectService.getAllProjectByTeam(user,Category,tag);
         return new ResponseEntity<>(projects, HttpStatus.OK);
-
     }
 
     @GetMapping("/{projectId}")
@@ -93,16 +93,24 @@ public class ProjectController {
         return new ResponseEntity<>(chat,HttpStatus.OK);
     }
 
-    @PostMapping("/invite")
-    public ResponseEntity<MessageResponse> invite(@RequestHeader("Authorization") String jwt ,
-                                                  @RequestBody Project project,
-                                                  @RequestBody InviteRequest req ) throws Exception {
-        User user = userService.findUserProfileByJwt(jwt);
-        invitationService.sendInvitation(req.getEmail() , req.getProjectId());
-        MessageResponse res = new MessageResponse("User invitation sent");
-        return new ResponseEntity<>(res,HttpStatus.OK);
-    }
+//    @PostMapping("/invite")
+//    public ResponseEntity<MessageResponse> invite(@RequestHeader("Authorization") String jwt ,
+//                                                  @RequestBody Project project,
+//                                                  @RequestBody InviteRequest req ) throws Exception {
+//        User user = userService.findUserProfileByJwt(jwt);
+//        invitationService.sendInvitation(req.getEmail() , req.getProjectId());
+//        MessageResponse res = new MessageResponse("User invitation sent");
+//        return new ResponseEntity<>(res,HttpStatus.OK);
+//    }
+@PostMapping("/invite")
+public ResponseEntity<MessageResponse> invite(@RequestHeader("Authorization") String jwt,
+                                              @RequestBody InviteRequest req) throws Exception {
+    User user = userService.findUserProfileByJwt(jwt);
+    invitationService.sendInvitation(req.getEmail(), req.getProjectId());
+    MessageResponse res = new MessageResponse("User invitation sent");
 
+    return new ResponseEntity<>(res, HttpStatus.OK);
+}
     @GetMapping("accept_mapping")
     public ResponseEntity<Invitation> acceptMapping(@RequestHeader("Authorization") String jwt,
                                                          @RequestParam String token,

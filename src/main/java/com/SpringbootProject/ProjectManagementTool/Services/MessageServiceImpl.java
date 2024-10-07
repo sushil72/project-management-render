@@ -32,6 +32,7 @@ public class MessageServiceImpl implements MessageService {
         Message msg = new Message();
         msg.setContent(content);
         msg.setCreatedAt(LocalDateTime.now());
+        msg.setSender(user);
         msg.setChat(chat);
         Message savedMsg = messageRepository.save(msg);
         chat.getMessages().add(savedMsg);
@@ -40,8 +41,11 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessageByProjectId(Long projectId) throws Exception {
-        Chat chat =  projectService.getChatByProjectId(projectId).getProject().getChat();
-        return messageRepository.findByChatOrderByCreatedAtAsc(chat);
+        System.out.println("project id in : "+projectId);
+        Chat chat =  projectService.getChatByProjectId(projectId);
+        System.out.println("chat in mmc :  "+chat);
+        List<Message> findByChatOrderByCreatedAtAsc  = messageRepository.findByChatIdOrderByCreatedAtAsc(chat.getId());
+        return findByChatOrderByCreatedAtAsc;
     }
 
 

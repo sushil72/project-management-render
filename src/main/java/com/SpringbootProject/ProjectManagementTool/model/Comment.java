@@ -22,6 +22,6 @@ public class Comment {
     @ManyToOne
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Issue issue;
 }

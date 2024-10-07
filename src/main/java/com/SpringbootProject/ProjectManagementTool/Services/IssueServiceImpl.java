@@ -34,6 +34,7 @@ public class IssueServiceImpl implements IssueService{
 
     @Override
     public Issue createIssue(IssueRequest issueRequest, User user) throws Exception {
+        System.out.println("\n\nProject id ="+issueRequest.getProjectID());
         Project project = projectService.getProjectById(issueRequest.getProjectID());
         Issue issue = new Issue();
         issue.setProject(project);
@@ -42,7 +43,6 @@ public class IssueServiceImpl implements IssueService{
         issue.setPriority(issueRequest.getPriority());
         issue.setDueDate(issueRequest.getDueDate());
         issue.setStatus(issueRequest.getStatus());
-
         return issueRepositiory.save(issue);
     }
 

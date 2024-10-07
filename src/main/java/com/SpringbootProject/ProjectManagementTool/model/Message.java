@@ -24,4 +24,13 @@ public class Message {
 
     @ManyToOne
     private Chat chat;
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", chatId=" + (chat != null ? chat.getId() : null) +
+                '}';
+    }
 }

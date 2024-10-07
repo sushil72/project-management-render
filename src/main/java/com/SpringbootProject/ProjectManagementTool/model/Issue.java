@@ -30,7 +30,7 @@ public class Issue{
 
     private List<String> tags = new ArrayList<>();
     @JsonIgnore
-    @OneToMany
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
     @ManyToOne
     private User assignee;

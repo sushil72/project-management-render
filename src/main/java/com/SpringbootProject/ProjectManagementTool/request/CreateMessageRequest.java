@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateMessageRequest {
-    private Long SenderId;
+    private Long senderId;
     private String content;
-    private Long projectId;
+    private Long  projectId;
 }
 

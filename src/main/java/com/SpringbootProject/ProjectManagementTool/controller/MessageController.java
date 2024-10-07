@@ -31,10 +31,10 @@ public class MessageController {
 
     @PostMapping("/send")
     public ResponseEntity<Message> sendMessage(@RequestBody CreateMessageRequest request) throws Exception {
-        User user = userService.findUserByid(request.getSenderId());
+        System.out.println("Request object :"+request);
+//        User user = userService.findUserByid(request.getSenderId());
         Chat chat = projectService.getProjectById(request.getProjectId()).getChat();
         if(chat==null) throw new Exception("Chat not found");
-
             Message sentMessage =messageService.sendMessage(request.getSenderId(),
                     request.getProjectId(), request.getContent());
             return ResponseEntity.ok(sentMessage);
@@ -42,7 +42,9 @@ public class MessageController {
 
     @GetMapping("/chat/{projectId}")
     public ResponseEntity<List<Message>> getMessageByChatId(@PathVariable Long projectId) throws Exception {
+        System.out.println("project id :"+projectId);
         List<Message> messages = messageService.getMessageByProjectId(projectId);
+
         return ResponseEntity.ok(messages);
     }
 }

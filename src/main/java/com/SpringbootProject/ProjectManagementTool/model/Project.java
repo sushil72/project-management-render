@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,9 +21,12 @@ public class Project {
     private String name;
     private String description;
     private String category;
-    private List<String> tags=new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "project_tags", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "tag")
+    private List<String> tags;
 
-    @JsonIgnore
+  ;  @JsonIgnore
     @OneToOne(mappedBy =  "project" , cascade = CascadeType.ALL,orphanRemoval = true)
     private Chat chat;
 
@@ -34,5 +38,14 @@ public class Project {
 
     @ManyToMany()
     private List<User>team=new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", chatId=" + (chat != null ? chat.getId() : null) +
+                '}';
+    }
 
 }

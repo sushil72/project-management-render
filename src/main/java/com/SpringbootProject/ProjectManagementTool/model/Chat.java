@@ -32,5 +32,13 @@ public class Chat {
     @ManyToMany
     private List<User> users = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "id=" + id +
+                ", projectId=" + (project != null ? project.getId() : null) +
+                ", messageCount=" + (messages != null ? messages.size() : 0) +
+                '}';
+    }
 
 }

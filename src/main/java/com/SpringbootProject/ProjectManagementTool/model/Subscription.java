@@ -18,10 +18,9 @@ public class Subscription {
     private Long  id;
     private LocalDate subscriptionStartDate;
     private LocalDate subscriptionEndDate;
+    @Enumerated(EnumType.STRING)
     private PlanType planType;
     private boolean isValid ;
     @OneToOne
     private User user;
-
-
 }

@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/subscription")
+@RequestMapping("/api/subscriptions")
 public class SubscriptionController {
     @Autowired
     private SubscriptionService subscriptionService;
@@ -28,16 +28,16 @@ public class SubscriptionController {
         Subscription subscription = subscriptionService.getUserSubscription(user.getId());
         return new ResponseEntity<>(subscription, HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "http://localhost:5173")
     @PatchMapping("/upgrade")
     public ResponseEntity<Subscription> upgradeSubscription(
-            @RequestHeader("Authorization") String jwt ,
+            @RequestHeader("Authorization") String jwt,
             @RequestParam PlanType planType
             ) throws Exception{
         User user =  userService.findUserProfileByJwt(jwt);
+        System.out.println("upgradeSubscription with user : "+user);
         Subscription subscription = subscriptionService.upgradeSubscription(user.getId(),planType);
-        return new ResponseEntity<>(subscription,HttpStatus.OK);
+
+        return new ResponseEntity<>(subscription,HttpStatus.OK);    
     }
-
-
 }

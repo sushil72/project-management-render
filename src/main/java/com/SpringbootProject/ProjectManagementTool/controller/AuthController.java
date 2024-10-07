@@ -2,6 +2,7 @@ package com.SpringbootProject.ProjectManagementTool.controller;
 
 import com.SpringbootProject.ProjectManagementTool.Configurations.CustomUser;
 import com.SpringbootProject.ProjectManagementTool.Configurations.JwtProvider;
+import com.SpringbootProject.ProjectManagementTool.Services.SubscriptionService;
 import com.SpringbootProject.ProjectManagementTool.model.User;
 import com.SpringbootProject.ProjectManagementTool.repository.UserRepo;
 import com.SpringbootProject.ProjectManagementTool.request.LoginRequest;
@@ -33,19 +34,24 @@ public class AuthController {
     @Autowired
     private CustomUser customUser;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
+
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user ) throws Exception{
         User isUserExist = userRepository.findByEmail(user.getEmail());
         if(isUserExist != null){
             throw new Exception("User is already exists with this email " );
         }
-
+        System.out.println("user sined up : "+user.getFullname());
         User createdUser =  new User();
         createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
         createdUser.setEmail(user.getEmail());
         createdUser.setFullname(user.getFullname());
 
         User savedUser = userRepository.save(createdUser);
+        System.out.println("user just registered is "+user);
+        subscriptionService.createSubscription(savedUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -55,7 +61,6 @@ public class AuthController {
         res.setMessage("signup successful");
 
         return new ResponseEntity<>(res, HttpStatus.CREATED);
-
     }
 
     @PostMapping("/signing")
