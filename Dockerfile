@@ -10,8 +10,8 @@
 #ENTRYPOINT ["java","-jar","render.jar"]
 
 
-# Use the official Maven image with the correct JDK version
-FROM maven:3.9.5-eclipse-temurin-22 AS build
+# Use Maven with OpenJDK 21
+FROM maven:3.9.5-eclipse-temurin-21 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -23,7 +23,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Use a lightweight OpenJDK image to run the Spring Boot application
-FROM eclipse-temurin:22-jdk-slim
+FROM eclipse-temurin:21-jdk-slim
 
 # Set the working directory
 WORKDIR /app
