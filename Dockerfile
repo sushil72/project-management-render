@@ -11,7 +11,7 @@
 
 
 # Use Maven with OpenJDK 21
-FROM maven:3.9.5-eclipse-temurin-21 AS build
+FROM maven:3.9.6-eclipse-temurin-22-jammy AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -23,7 +23,8 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Use a lightweight OpenJDK image to run the Spring Boot application
-FROM eclipse-temurin:21-jdk-slim
+FROM  eclipse-temurin:22-jdk-jammy
+
 
 # Set the working directory
 WORKDIR /app
